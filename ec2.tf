@@ -30,7 +30,7 @@ resource "aws_instance" "webserver" {
   }
 }
 
-output "instance_ip_addr" {
-	description = "Public IP of the Web server"
-	value = aws_instance.webserver.public_ip
+output "ec2_public_ip" {
+  description = "Public IP of the Web server"
+  value = aws_instance.webserver.public_ip
 }
