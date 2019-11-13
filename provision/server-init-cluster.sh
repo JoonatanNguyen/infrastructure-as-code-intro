@@ -3,6 +3,7 @@
 sudo apt update
 sudo apt --assume-yes install nodejs
 sudo apt --assume-yes install npm
+sudo apt --assume-yes install stress-ng
 sudo npm i -g pm2 
 mkdir /home/ubuntu/webserver >& /dev/null || true
 cd /home/ubuntu/webserver
@@ -15,3 +16,6 @@ EOF
 npm install
 sudo pm2 delete app >& /dev/null || true
 sudo pm2 start app.js
+
+# Stress test
+# stress-ng -c 0 -l 90

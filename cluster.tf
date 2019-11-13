@@ -100,7 +100,7 @@ resource "aws_autoscaling_policy" "webserver-scale-up" {
   name                   = "${var.project}-webserver-scale-up"
   scaling_adjustment     = 1
   adjustment_type        = "ChangeInCapacity"
-  cooldown               = 300
+  cooldown               = 60
   autoscaling_group_name = aws_autoscaling_group.webserver[0].name
 }
 
@@ -109,7 +109,7 @@ resource "aws_autoscaling_policy" "webserver-scale-down" {
   name                   = "${var.project}-webserver-scale-down"
   scaling_adjustment     = -1
   adjustment_type        = "ChangeInCapacity"
-  cooldown               = 300
+  cooldown               = 60
   autoscaling_group_name = aws_autoscaling_group.webserver[0].name
 }
 
@@ -117,12 +117,12 @@ resource "aws_cloudwatch_metric_alarm" "webserver-cpu-high" {
   count               = var.ec2_enable_cluster ? 1 : 0
   alarm_name          = "${var.project}-webserver-cpu-high"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "2"
+  evaluation_periods  = 2
   metric_name         = "CPUUtilization"
   namespace           = "AWS/EC2"
-  period              = "300"
+  period              = 60
   statistic           = "Average"
-  threshold           = "80"
+  threshold           = 80
   alarm_actions = [
     aws_autoscaling_policy.webserver-scale-up[0].arn
   ]
@@ -135,12 +135,12 @@ resource "aws_cloudwatch_metric_alarm" "webserver-cpu-low" {
   count               = var.ec2_enable_cluster ? 1 : 0
   alarm_name          = "${var.project}-webserver-cpu-low"
   comparison_operator = "LessThanOrEqualToThreshold"
-  evaluation_periods  = "2"
-  metric_name         = "MemoryUtilization"
+  evaluation_periods  = 2
+  metric_name         = "CPUUtilization"
   namespace           = "AWS/EC2"
-  period              = "300"
+  period              = 60
   statistic           = "Average"
-  threshold           = "40"
+  threshold           = 40
   alarm_actions = [
     aws_autoscaling_policy.webserver-scale-down[0].arn
   ]
