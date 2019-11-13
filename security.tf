@@ -1,6 +1,6 @@
 resource "aws_security_group" "webserver" {
-  name = "${var.project}-instance"
-	description = "Allow traffict to and from web server"
+  name        = "${var.project}-instance"
+  description = "Allow traffict to and from web server"
   vpc_id      = aws_vpc.this.id
 
   # Allow inbound HTTP from anywhere
@@ -35,8 +35,8 @@ resource "aws_security_group" "webserver" {
 }
 
 resource "aws_security_group" "loadbalancer" {
-  name = "${var.project}-loadbalancer"
-	description = "Allow traffict to and from load balancer"
+  name        = "${var.project}-loadbalancer"
+  description = "Allow traffict to and from load balancer"
   vpc_id      = aws_vpc.this.id
 
   ingress {

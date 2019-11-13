@@ -1,6 +1,6 @@
 resource "aws_launch_configuration" "webserver" {
   count         = var.ec2_enable_cluster ? 1 : 0
-  name_prefix          = "${var.project}-webserver-"
+  name_prefix   = "${var.project}-webserver-"
   image_id      = data.aws_ami.ubuntu-18_04.id
   instance_type = var.ec2_instance_type
 
@@ -24,8 +24,8 @@ resource "aws_launch_configuration" "webserver" {
 resource "aws_autoscaling_group" "webserver" {
   count                = var.ec2_enable_cluster ? 1 : 0
   name                 = "${var.project}-webserver"
-  max_size             = 6 
-  min_size             = 1
+  max_size             = 6
+  min_size             = 2
   desired_capacity     = 2
   launch_configuration = aws_launch_configuration.webserver[0].name
   health_check_type    = "EC2"
@@ -78,7 +78,7 @@ resource "aws_lb" "webserver" {
 resource "aws_lb_target_group" "webserver" {
   count    = var.ec2_enable_cluster ? 1 : 0
   name     = "${var.project}-webserver"
-  vpc_id = aws_vpc.this.id
+  vpc_id   = aws_vpc.this.id
   port     = var.ec2_server_port
   protocol = "HTTP"
 }
@@ -92,6 +92,60 @@ resource "aws_lb_listener" "webserver" {
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.webserver[0].arn
+  }
+}
+
+resource "aws_autoscaling_policy" "webserver-scale-up" {
+  count                  = var.ec2_enable_cluster ? 1 : 0
+  name                   = "${var.project}-webserver-scale-up"
+  scaling_adjustment     = 1
+  adjustment_type        = "ChangeInCapacity"
+  cooldown               = 300
+  autoscaling_group_name = aws_autoscaling_group.webserver[0].name
+}
+
+resource "aws_autoscaling_policy" "webserver-scale-down" {
+  count                  = var.ec2_enable_cluster ? 1 : 0
+  name                   = "${var.project}-webserver-scale-down"
+  scaling_adjustment     = -1
+  adjustment_type        = "ChangeInCapacity"
+  cooldown               = 300
+  autoscaling_group_name = aws_autoscaling_group.webserver[0].name
+}
+
+resource "aws_cloudwatch_metric_alarm" "webserver-cpu-high" {
+  count               = var.ec2_enable_cluster ? 1 : 0
+  alarm_name          = "${var.project}-webserver-cpu-high"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = "300"
+  statistic           = "Average"
+  threshold           = "80"
+  alarm_actions = [
+    aws_autoscaling_policy.webserver-scale-up[0].arn
+  ]
+  dimensions = {
+    AutoScalingGroupName = aws_autoscaling_group.webserver[0].name
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "webserver-cpu-low" {
+  count               = var.ec2_enable_cluster ? 1 : 0
+  alarm_name          = "${var.project}-webserver-cpu-low"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "MemoryUtilization"
+  namespace           = "AWS/EC2"
+  period              = "300"
+  statistic           = "Average"
+  threshold           = "40"
+  alarm_actions = [
+    aws_autoscaling_policy.webserver-scale-down[0].arn
+  ]
+  dimensions = {
+    AutoScalingGroupName = aws_autoscaling_group.webserver[0].name
   }
 }
 

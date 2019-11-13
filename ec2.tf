@@ -4,10 +4,11 @@ resource "aws_key_pair" "this" {
 }
 
 resource "aws_instance" "webserver" {
+  count         = var.ec2_enable_cluster ? 0 : 1
   ami           = data.aws_ami.ubuntu-18_04.id
   instance_type = var.ec2_instance_type
   key_name      = aws_key_pair.this.key_name
-  subnet_id = aws_subnet.public[0].id
+  subnet_id     = aws_subnet.public[0].id
 
   vpc_security_group_ids = [
     aws_security_group.webserver.id
@@ -25,8 +26,10 @@ resource "aws_instance" "webserver" {
 }
 
 resource "null_resource" "provisioner" {
+  count = var.ec2_enable_cluster ? 0 : 1
+
   connection {
-    host        = aws_instance.webserver.public_ip
+    host        = aws_instance.webserver[0].public_ip
     type        = "ssh"
     user        = "ubuntu"
     private_key = file("${path.module}/instance-private.key")
@@ -44,5 +47,5 @@ resource "null_resource" "provisioner" {
 
 output "ec2_public_ip" {
   description = "Public IP of the Web server"
-  value       = aws_instance.webserver.public_ip
+  value       = aws_instance.webserver[0].public_ip
 }
