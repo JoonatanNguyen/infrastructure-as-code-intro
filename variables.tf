@@ -25,7 +25,7 @@ variable "ec2_server_port" {
 
 variable "ec2_enable_cluster" {
   description = "Enable creation of cluster"
-  default     = true
+  default     = false
 }
 
 variable "vpc_cidr" {
