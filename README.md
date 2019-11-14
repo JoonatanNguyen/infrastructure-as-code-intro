@@ -14,7 +14,7 @@ aws_secret_access_key=<your_iam_user_secret_key>
 And a file `~/.aws/config` with this content:
 ```
 [default]
-region=us-west-2
+region=us-east-1
 output=json
 ```
 
