@@ -15,7 +15,7 @@ variable "aws_region" {
 
 variable "ec2_instance_type" {
   description = "Type of EC2 instance"
-  default     = "t2.medium"
+  default     = "t2.small"
 }
 
 variable "ec2_server_port" {
