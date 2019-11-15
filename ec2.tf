@@ -47,5 +47,5 @@ resource "null_resource" "provisioner" {
 
 output "ec2_public_ip" {
   description = "Public IP of the Web server"
-  value       = aws_instance.webserver[0].public_ip
+  value       = aws_instance.webserver.*.public_ip
 }

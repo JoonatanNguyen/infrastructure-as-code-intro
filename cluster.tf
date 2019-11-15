@@ -150,5 +150,5 @@ resource "aws_cloudwatch_metric_alarm" "webserver-cpu-low" {
 }
 
 output "load_balancer_dns" {
-  value = aws_lb.webserver[0].dns_name
+  value = aws_lb.webserver.*.dns_name
 }
