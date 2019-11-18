@@ -28,11 +28,11 @@ output=json
 ## Notes
 If you successfully run `terraform apply` but can't see your EC2 instances on the AWS Web Console, check that you're using `us-east-1` region (or whatever else non-default region you've configured in the project). You can change the region from the top right corner on the navigation bar of the AWS Web Console.
 
-## Senarios
-We'll be having 2 senarios for our hands-on lab.
+## Scenarios
+We'll be having 2 scenarios for our hands-on lab.
 
 ### A single Web server
-In this senario, we'll bring up a single EC2 instance to run a simple NodeJS Web server. The following resources will be created:
+In this scenario, we'll bring up a single EC2 instance to run a simple NodeJS Web server. The following resources will be created:
 * A VPC with 2 public subnets & 2 private subnets
 * One Internet gateway
 * One NAT gateway
@@ -46,14 +46,14 @@ Just follow the steps in `How to run` and you'll get the output of the public IP
 
 
 ### A cluster of Web server
-In this senario, we'll bring up a cluster of Web server via Autoscaling. A Load balancer is also created to handle and distribute the requests to different Web servers. In addition to the resources as in the `A single Web server` senario, we'll also bring up the following ones:
+In this scenario, we'll bring up a cluster of Web server via Autoscaling. A Load balancer is also created to handle and distribute the requests to different Web servers. In addition to the resources as in the `A single Web server` scenario, we'll also bring up the following ones:
 * Launch configuration
 * Auto scaling group
 * Application load balancer
 * Cloudwatch metric alarms
 * Scaling policies
 
-In order to run this senario, create a file named `terraform.tfvars` in the project root and put this into it:
+In order to run this scenario, create a file named `terraform.tfvars` in the project root and put this into it:
 ```
 ec2_enable_cluster = true
 ```
