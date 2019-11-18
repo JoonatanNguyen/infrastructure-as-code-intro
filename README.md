@@ -23,4 +23,7 @@ output=json
 2. Run `terraform init` to download required providers
 3. Run `terraform plan` to see what Terraform has planned and what resources are to be created
 4. Run `terraform apply` to apply the plan and create the infrastructure
-5. When not in use, run `terraform destroy` to destroy the infrastructure
+5. When not in use, run `terraform destroy` to destroy the infrastructure. NOTE: Always remember to do this or you'll incur charge from AWS for the resources that you left running.
+
+## Notes
+If you successfully run `terraform apply` but can't see your EC2 instances on the AWS Web Console, check that you're using `us-east-1` region (or whatever else non-default region you've configured in the project). You can change the region from the top right corner on the navigation bar of the AWS Web Console.
