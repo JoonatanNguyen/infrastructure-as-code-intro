@@ -72,3 +72,6 @@ To see how autoscaling works in action, follow these steps:
 8. After few minutes (this can be a bit longer), you'll see one Web server instance to be terminated.
 9. In order to exit from the Web server instance SSH terminal, type `exit`
 10. Always remember to run `terraform destroy` (type `yes` when prompted) to destroy the resources you've created or you'll get a bill from AWS.
+
+## Notes for Windows users
+On Windows, it's recommended that you run all those in Cygwin.
