@@ -15,8 +15,8 @@ cat <<'EOF' > app.js
 ${appJs}
 EOF
 npm install
-sudo pm2 delete app >& /dev/null || true
-sudo pm2 start app.js
+pm2 delete app >& /dev/null || true
+pm2 start app.js
 
 # Stress test
 # stress-ng -c 0 -l 90

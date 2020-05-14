@@ -28,6 +28,18 @@ variable "ec2_enable_cluster" {
   default     = false
 }
 
+variable "cluster_min_size" {
+  default = 1
+}
+
+variable "cluster_max_size" {
+  default = 3
+}
+
+variable "cluster_desired_size" {
+  default = 2
+}
+
 variable "vpc_cidr" {
   description = "CIDR for the main VPC"
   type        = string

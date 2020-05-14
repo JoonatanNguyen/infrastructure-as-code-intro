@@ -35,6 +35,12 @@ resource "null_resource" "provisioner" {
     private_key = file("${path.module}/instance-private.key")
   }
 
+  triggers = {
+    init_sha1 = sha1(file("provision/server-init.sh"))
+    app       = sha1(file("provision/webserver/app.js"))
+    package   = sha1(file("provision/webserver/package.json"))
+  }
+
   provisioner "file" {
     source      = "provision/webserver"
     destination = "/home/ubuntu/"

@@ -24,9 +24,9 @@ resource "aws_launch_configuration" "webserver" {
 resource "aws_autoscaling_group" "webserver" {
   count                = var.ec2_enable_cluster ? 1 : 0
   name                 = "${var.project}-webserver"
-  max_size             = 3
-  min_size             = 1
-  desired_capacity     = 1
+  max_size             = var.cluster_max_size
+  min_size             = var.cluster_min_size 
+  desired_capacity     = var.cluster_desired_size 
   launch_configuration = aws_launch_configuration.webserver[0].name
   health_check_type    = "EC2"
   termination_policies = ["OldestLaunchConfiguration", "OldestInstance"]
