@@ -11,4 +11,5 @@
 
 # .tfvars files
 *.tfvars
+*.key
 
